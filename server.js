@@ -38,14 +38,15 @@ const getAssistantResponse = async prompt => {
 
 app.get('/', async (req, res) => {
   try {
-    if (!req.query.query || !req.query.query === '') {
+    if (!req.query.query || req.query.query === '') {
       throw Error('Please provide query.');
+    } else {
+      const response = await getAssistantResponse(req.query.query);
+      res.send(response);
     }
-    const response = await getAssistantResponse(req.query.query);
-    res.send(response);
   } catch (err) {
     console.log(err);
-    res.send(err);
+    res.send(err.message);
   }
 });
 
